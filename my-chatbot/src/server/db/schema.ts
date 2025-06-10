@@ -9,6 +9,7 @@ import {
   foreignKey,
   integer,
   timestamp,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import type { Message } from "ai";
 
@@ -23,13 +24,12 @@ export const createTable = pgTableCreator((name) => `my-chatbot_${name}`);
 export const messagesTable = createTable(
   "messagesTable",
   (d) => ({
-    id: d.integer().primaryKey(),
+    id: d.varchar({ length: 256 }).primaryKey(),
     chatId: d.varchar({ length: 256 }).notNull(),
     role: d.varchar({ length: 256 }),
     createdAt: d
       .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
+      .default(sql`CURRENT_TIMESTAMP`),
     parts: jsonb("parts").notNull(),
     content: d.text().notNull(),
   }),
@@ -39,7 +39,7 @@ export const messagesTable = createTable(
 );
 
 export const userSession = createTable("user-sessions-table", (d) => ({
-  id: d.varchar({ length: 255 }).primaryKey(),
+  id: d.varchar({ length: 256 }).primaryKey(),
   createdAt: d
     .timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
