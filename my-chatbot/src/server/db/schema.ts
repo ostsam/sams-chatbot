@@ -2,7 +2,16 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { sql } from "drizzle-orm";
-import { index, pgTableCreator } from "drizzle-orm/pg-core";
+import {
+  index,
+  pgTableCreator,
+  jsonb,
+  foreignKey,
+  integer,
+  timestamp,
+  pgEnum,
+} from "drizzle-orm/pg-core";
+import type { Message } from "ai";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -12,16 +21,40 @@ import { index, pgTableCreator } from "drizzle-orm/pg-core";
  */
 export const createTable = pgTableCreator((name) => `my-chatbot_${name}`);
 
-export const posts = createTable(
-  "post",
+export const messagesTable = createTable(
+  "messagesTable",
   (d) => ({
-    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
-    name: d.varchar({ length: 256 }),
+    id: d.varchar({ length: 256 }).primaryKey(),
+    chatId: d.varchar({ length: 256 }).notNull(),
+    role: d.varchar({ length: 256 }),
     createdAt: d
       .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+      .default(sql`CURRENT_TIMESTAMP`),
+    parts: jsonb("parts").notNull(),
+    content: d.text().notNull(),
   }),
-  (t) => [index("name_idx").on(t.name)],
+  (t) => [
+    foreignKey({ columns: [t.chatId], foreignColumns: [userSession.id] }),
+  ],
 );
+
+export const userSession = createTable("user-sessions-table", (d) => ({
+  id: d.varchar({ length: 256 }).primaryKey(),
+  createdAt: d
+    .timestamp({ withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+}));
+
+/*
+"id": "msgc-JB45KvXzHBbK48eI",
+"createdAt": "2025-06-10T17:39:03.493Z",
+"role": "user",
+"content": "Hi",
+"parts": [
+  {
+    "type": "text",
+    "text": "Hi"
+  }
+]
+  */
