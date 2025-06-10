@@ -1,10 +1,10 @@
 import { generateId, type Message } from "ai";
 import { existsSync, mkdirSync } from "fs";
 import { writeFile, readFile } from "fs/promises";
-import { userSession } from "~/server/db/schema";
+import { userSession, messages, messagesTable } from "~/server/db/schema";
 import path from "path";
 import { db } from "~/db";
-
+import { eq } from "drizzle-orm";
 
 export async function createChat(): Promise<string> {
   const chatId = generateId(); // generate a unique chat ID
@@ -12,7 +12,6 @@ export async function createChat(): Promise<string> {
     id: chatId,
     createdAt: new Date(Date.now()),
   };
-  console.log(chat);
   await db.insert(userSession).values(chat);
   return chatId;
 }
@@ -23,8 +22,16 @@ function getChatFile(id: string): string {
   return path.join(chatDir, `${id}.json`);
 }
 
-export async function loadChat(id: string): Promise<Message[]> {
-  return JSON.parse(await readFile(getChatFile(id), "utf8"));
+export async function loadChat(id: string) {
+  const selectSession = db
+    .select()
+    .from(messagesTable)
+    .where(eq(messagesTable.chatId, id));
+
+  if (selectSession == null || undefined) {
+    throw new Error("Session not found.");
+  }
+  ///JSON.parse(await readFile(getChatFile(id), "utf8"));
 }
 
 export async function saveChat({

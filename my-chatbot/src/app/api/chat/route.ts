@@ -5,8 +5,7 @@ import {
   createIdGenerator,
   appendClientMessage,
 } from "ai";
-import { saveChat } from "~/app/tools/chat-store";
-import { loadChat } from "~/app/tools/chat-store";
+import { saveChat, loadChat } from "~/app/tools/chat-store";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
