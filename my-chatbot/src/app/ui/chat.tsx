@@ -15,6 +15,9 @@ export default function Chat({
       prefix: "msgc",
       size: 16,
     }),
+    experimental_prepareRequestBody({messages, id}) {
+        return { message: messages[messages.length -1], id};
+    }
   });
 
   // simplified rendering code, extend as needed:
