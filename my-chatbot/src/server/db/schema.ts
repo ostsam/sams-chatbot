@@ -3,6 +3,8 @@
 
 import { sql } from "drizzle-orm";
 import { index, pgTableCreator } from "drizzle-orm/pg-core";
+import type { Message } from "ai";
+import { integer, timestamp } from "drizzle-orm/pg-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -25,3 +27,24 @@ export const posts = createTable(
   }),
   (t) => [index("name_idx").on(t.name)],
 );
+
+export const userSession = createTable("user-sessions-table", (d) => ({
+  id: d.varchar({ length: 255 }).primaryKey(),
+  createdAt: d
+    .timestamp({ withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+}));
+
+/*
+"id": "msgc-JB45KvXzHBbK48eI",
+"createdAt": "2025-06-10T17:39:03.493Z",
+"role": "user",
+"content": "Hi",
+"parts": [
+  {
+    "type": "text",
+    "text": "Hi"
+  }
+]
+  */

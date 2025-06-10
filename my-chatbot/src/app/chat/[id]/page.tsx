@@ -6,3 +6,4 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const messages = await loadChat(id); // load the chat messages
   return <Chat id={id} initialMessages={messages} />; // display the chat
 }
+
