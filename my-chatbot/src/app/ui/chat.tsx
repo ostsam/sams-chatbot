@@ -1,5 +1,4 @@
 "use client";
-
 import { type Message, useChat } from "@ai-sdk/react";
 import { createIdGenerator } from "ai";
 
@@ -15,9 +14,9 @@ export default function Chat({
       prefix: "msgc",
       size: 16,
     }),
-    experimental_prepareRequestBody({messages, id}) {
-        return { message: messages[messages.length -1], id};
-    }
+    experimental_prepareRequestBody({ messages, id }) {
+      return { message: messages[messages.length - 1], id };
+    },
   });
 
   // simplified rendering code, extend as needed:
