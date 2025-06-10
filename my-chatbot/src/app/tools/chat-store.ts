@@ -52,5 +52,6 @@ export async function saveChat(id: string, messages: Message[]) {
       createdAt: m.createdAt || null,
     };
     await db.insert(messagesTable).values(message);
+    return message;
   }
 }

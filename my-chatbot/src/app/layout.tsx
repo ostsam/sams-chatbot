@@ -21,8 +21,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+      <body className="relative flex flex-col items-center justify-start bg-gradient-to-b from-[#064a44] to-[#1c0f0f]">
+        <div className="opacity-55"></div>
+        <div className="mx-auto flex h-dvh w-screen max-w-md flex-col overflow-hidden rounded-lg bg-gradient-to-br from-black to-neutral-900 font-mono tracking-tight shadow-xl ring-1 ring-white/10">
+          <div className="max-h h-full flex-1 space-y-5 overflow-y-auto pb-0.5">
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </div>
+        </div>
       </body>
     </html>
   );
