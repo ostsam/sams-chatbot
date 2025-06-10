@@ -1,0 +1,58 @@
+[
+  {
+    "id": "msgc-2kgn9cyGtrlUwQq2",
+    "createdAt": "2025-06-10T16:47:37.039Z",
+    "role": "user",
+    "content": "Answer only yes, no or okay.",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Answer only yes, no or okay."
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "id": "msg-GbNebLWNl56FT8EZ7Q2EMt3h",
+    "createdAt": "2025-06-10T16:47:41.721Z",
+    "content": "Okay.",
+    "toolInvocations": [],
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "Okay."
+      }
+    ]
+  },
+  {
+    "id": "msgc-SuQo56FBrOuKJBEL",
+    "createdAt": "2025-06-10T16:47:52.796Z",
+    "role": "user",
+    "content": "Still working?",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Still working?"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "id": "msg-JONUOll78My7kvZDXykG5FIN",
+    "createdAt": "2025-06-10T16:47:56.264Z",
+    "content": "Yes.",
+    "toolInvocations": [],
+    "parts": [
+      {
+        "type": "step-start"
+      },
+      {
+        "type": "text",
+        "text": "Yes."
+      }
+    ]
+  }
+]
