@@ -20,7 +20,7 @@ export async function createChat(): Promise<string> {
   const chatId = generateId(); // generate a unique chat ID
   const chat: typeof userSession.$inferSelect = {
     id: chatId,
-    createdAt: new Date(Date.now()),
+    createdAt: new Date(),
   };
   await db.insert(userSession).values(chat);
   return chatId;
@@ -34,23 +34,22 @@ export async function loadChat(
     .from(messagesTable)
     .where(eq(messagesTable.chatId, id));
 
-  return selectSession;
-
   if (selectSession == null || undefined) {
     throw new Error("Session not found.");
   }
+  return selectSession;
 }
 
-export async function saveChat(id: string, messages: Message[]) {
-  for (const m of messages) {
-    const message: typeof messagesTable.$inferSelect = {
-      id: m.id,
-      chatId: id,
-      role: m.role,
-      parts: m.parts,
-      content: m.content,
-      createdAt: m.createdAt || null,
-    };
-    await db.insert(messagesTable).values(message);
-  }
+export async function saveChat(messages: Message[]) {
+  const userId = generateId();
+  const mappedMessages = messages.map((m) => ({
+    id: userId,
+    chatId: m.id,
+    role: m.role,
+    parts: m.parts,
+    content: m.content,
+    createdAt: new Date(),
+  }));
+  await db.insert(messagesTable).values(mappedMessages);
+  return mappedMessages;
 }
