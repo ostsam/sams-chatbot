@@ -43,17 +43,8 @@ export async function POST(req: Request) {
     model: openai("o3-mini-2025-01-31"),
     system: "You are a helpful assistant.",
     messages,
-    // when openai is done responding, do X
-    async onFinish({ response }) {
-      // save the entire chat to the database.
-      const allMessages = appendResponseMessages({
-        messages,
-        responseMessages: response.messages,
-      });
-
-      await saveChat(id, allMessages);
-    },
   });
+
   result.consumeStream();
 
   return result.toDataStreamResponse();

@@ -27,9 +27,7 @@ export const messagesTable = createTable(
     id: d.varchar({ length: 256 }).primaryKey(),
     chatId: d.varchar({ length: 256 }).notNull(),
     role: d.varchar({ length: 256 }),
-    createdAt: d
-      .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`),
+    createdAt: d.timestamp({ withTimezone: true }),
     parts: jsonb("parts").notNull(),
     content: d.text().notNull(),
   }),
@@ -45,16 +43,3 @@ export const userSession = createTable("user-sessions-table", (d) => ({
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
 }));
-
-/*
-"id": "msgc-JB45KvXzHBbK48eI",
-"createdAt": "2025-06-10T17:39:03.493Z",
-"role": "user",
-"content": "Hi",
-"parts": [
-  {
-    "type": "text",
-    "text": "Hi"
-  }
-]
-  */
