@@ -1,15 +1,8 @@
 import { redirect } from "next/navigation";
 import { createChat } from "../tools/chat-store";
 
-// export default async function Page(chatId: string) {
-//   console.log(chatId);
-//   const id = await createChat(chatId); // create a new chat
-//   redirect(`/chat/${id}`); // redirect to chat page, see below
-// }
-
 export default async function Page() {
-//   console.log(chatId);
+  //   console.log(chatId);
   const id = await createChat(); // create a new chat
   redirect(`/chat/${id}`); // redirect to chat page, see below
 }
-  
