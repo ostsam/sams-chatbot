@@ -1,18 +1,11 @@
 import { openai } from "@ai-sdk/openai";
-import {
-  streamText,
-  appendResponseMessages,
-  createIdGenerator,
-  appendClientMessage,
-} from "ai";
+import { streamText, appendResponseMessages, appendClientMessage } from "ai";
 import { saveChat, loadChat, convertMessage } from "~/app/tools/chat-store";
 import type { Message } from "ai";
 import { NextResponse } from "next/server";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
-export async function GET(req: Request) {
-  return new NextResponse("hello");
-}
+
 // what is the point of this function:
 // "there is a new message incoming... load up (??); save it to the database???"
 // wait for a request from the json?
