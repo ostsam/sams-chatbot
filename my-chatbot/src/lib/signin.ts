@@ -1,3 +1,4 @@
+"use server"
 import { authClient } from "./auth-client";
 import { useState } from "react";
 
