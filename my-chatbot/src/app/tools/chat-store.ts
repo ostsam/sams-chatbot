@@ -1,7 +1,12 @@
 import { generateId, type Message } from "ai";
+import { existsSync, mkdirSync } from "fs";
+import { writeFile, readFile } from "fs/promises";
 import { userSession, messagesTable } from "~/server/db/schema";
+import path from "path";
 import { db } from "~/db";
 import { eq } from "drizzle-orm";
+import { auth } from "~/lib/auth";
+import { headers } from "next/headers";
 
 // TOOD
 // export function dbMessageToAppMessage(
@@ -14,8 +19,14 @@ import { eq } from "drizzle-orm";
 // }
 
 export async function createChat(): Promise<string> {
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+  if (!session?.user) {
+    throw new Error("you are not authenticated!");
+  }
   const chatId = generateId();
-  const userId = generateId(); // later: we need to get this from the auth library
+  const userId = session.user.id;
   const chat: typeof userSession.$inferSelect = {
     ///rename userSession
     chatId: chatId,

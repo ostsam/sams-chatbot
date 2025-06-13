@@ -10,6 +10,9 @@ import {
   integer,
   timestamp,
   pgEnum,
+  pgTable,
+  text,
+  boolean,
 } from "drizzle-orm/pg-core";
 import type { Message } from "ai";
 
@@ -45,8 +48,6 @@ export const userSession = createTable("user-sessions-table", (d) => ({
   userId: d.varchar({ length: 256 }),
 }));
 
-
-/* 
 export const user = pgTable("user", {
 id: text('id').primaryKey(),
 name: text('name').notNull(),
@@ -92,5 +93,3 @@ export const verification = pgTable("verification", {
  createdAt: timestamp('created_at').$defaultFn(() => new Date()),
  updatedAt: timestamp('updated_at').$defaultFn(() => new Date())
 				});
-
-*/ 
