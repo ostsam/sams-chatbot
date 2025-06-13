@@ -34,9 +34,8 @@ export default function Chat({
     setMessages(messages.filter((message) => message.id !== id));
   };
 
-  // simplified rendering code, extend as needed:
   return (
-    <div className="max-h relative h-full flex-1 space-y-5 overflow-y-auto p-6">
+    <div className="max-h relative h-full flex-1 space-y-5 overflow-y-auto scroll-auto p-6">
       {messages.map((message) => {
         const isUser = message.role === "user";
         return (
@@ -92,7 +91,7 @@ export default function Chat({
           </button>
         </div>
       )}
-      <div className="absolute inset-x-0 flex w-full">
+      <div className="absolute inset-x-0 self-end">
         <form
           onSubmit={handleSubmit}
           className="sticky bottom-0 left-0 flex w-full gap-3 border-t border-neutral-800 bg-black/80 px-4 py-3 backdrop-blur-md"

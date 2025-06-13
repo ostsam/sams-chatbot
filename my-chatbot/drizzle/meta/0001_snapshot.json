@@ -1,32 +1,27 @@
 {
-  "id": "71bdfcfa-38ab-453d-80d3-6a60cb45de12",
-  "prevId": "37b56738-047d-47b1-95a1-2db84ada1d36",
+  "id": "c856fdf8-b666-472d-bff1-da47b24b3cf0",
+  "prevId": "03604429-ce7e-4d7a-a66d-4c08df483fbe",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.my-chatbot_post": {
-      "name": "my-chatbot_post",
+    "public.my-chatbot_messagesTable": {
+      "name": "my-chatbot_messagesTable",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
+        "messageId": {
+          "name": "messageId",
+          "type": "varchar(256)",
           "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "my-chatbot_post_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
+          "notNull": true
         },
-        "name": {
-          "name": "name",
+        "chatId": {
+          "name": "chatId",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false
@@ -35,34 +30,37 @@
           "name": "createdAt",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
           "notNull": false
+        },
+        "parts": {
+          "name": "parts",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         }
       },
-      "indexes": {
-        "name_idx": {
-          "name": "name_idx",
-          "columns": [
-            {
-              "expression": "name",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
+      "indexes": {},
+      "foreignKeys": {
+        "my-chatbot_messagesTable_chatId_my-chatbot_user-sessions-table_chatId_fk": {
+          "name": "my-chatbot_messagesTable_chatId_my-chatbot_user-sessions-table_chatId_fk",
+          "tableFrom": "my-chatbot_messagesTable",
+          "tableTo": "my-chatbot_user-sessions-table",
+          "columnsFrom": [
+            "chatId"
           ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
+          "columnsTo": [
+            "chatId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -73,9 +71,9 @@
       "name": "my-chatbot_user-sessions-table",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(255)",
+        "chatId": {
+          "name": "chatId",
+          "type": "varchar(256)",
           "primaryKey": true,
           "notNull": true
         },
@@ -85,6 +83,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "CURRENT_TIMESTAMP"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},

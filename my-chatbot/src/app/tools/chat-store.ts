@@ -17,10 +17,13 @@ import { eq } from "drizzle-orm";
 // }
 
 export async function createChat(): Promise<string> {
-  const chatId = generateId(); // generate a unique chat ID
+  const chatId = generateId();
+  const userId = generateId(); // later: we need to get this from the auth library
   const chat: typeof userSession.$inferSelect = {
-    id: chatId,
+    ///rename userSession
+    chatId: chatId,
     createdAt: new Date(),
+    userId: userId,
   };
   await db.insert(userSession).values(chat);
   return chatId;
@@ -40,16 +43,29 @@ export async function loadChat(
   return selectSession;
 }
 
-export async function saveChat(messages: Message[]) {
-  const userId = generateId();
+export function convertMessage(
+  input: (typeof messagesTable.$inferSelect)[],
+): Message[] {
+  return input.map((message) => {
+    return {
+      ...message,
+      role: message.role as any,
+      id: message.messageId,
+      createdAt: message.createdAt || undefined,
+      parts: message.parts as any,
+    };
+  });
+}
+
+export async function saveChat(chatId: string, messages: Message[]) {
   const mappedMessages = messages.map((m) => ({
-    id: userId,
-    chatId: m.id,
+    messageId: m.id,
+    chatId: chatId,
     role: m.role,
     parts: m.parts,
     content: m.content,
     createdAt: new Date(),
   }));
-  await db.insert(messagesTable).values(mappedMessages);
+  await db.insert(messagesTable).values(mappedMessages).onConflictDoNothing();
   return mappedMessages;
 }

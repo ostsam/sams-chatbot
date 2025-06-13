@@ -24,7 +24,7 @@ export const createTable = pgTableCreator((name) => `my-chatbot_${name}`);
 export const messagesTable = createTable(
   "messagesTable",
   (d) => ({
-    id: d.varchar({ length: 256 }).primaryKey(),
+    messageId: d.varchar({ length: 256 }).primaryKey(),
     chatId: d.varchar({ length: 256 }).notNull(),
     role: d.varchar({ length: 256 }),
     createdAt: d.timestamp({ withTimezone: true }),
@@ -32,14 +32,15 @@ export const messagesTable = createTable(
     content: d.text().notNull(),
   }),
   (t) => [
-    foreignKey({ columns: [t.chatId], foreignColumns: [userSession.id] }),
+    foreignKey({ columns: [t.chatId], foreignColumns: [userSession.chatId] }),
   ],
 );
 
 export const userSession = createTable("user-sessions-table", (d) => ({
-  id: d.varchar({ length: 256 }).primaryKey(),
+  chatId: d.varchar({ length: 256 }).primaryKey(),
   createdAt: d
     .timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
+  userId: d.varchar({ length: 256 }),
 }));
